@@ -34,7 +34,10 @@ const createToken = (user: UserTypes): string => {
 
     return token;
   } catch (error) {
-    throw new Error(`Error generating token: ${error.message}`);
+    if (error instanceof Error) {
+      throw new Error(`Error generating token: ${error.message}`);
+    }
+    throw new Error(`Error desconocido al crear el token`);
   }
 };
 
