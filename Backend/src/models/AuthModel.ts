@@ -3,6 +3,7 @@ import { MixedUserType } from "../schemas/AuthValidate"; // 👈 importamos el t
 import { QueryResult } from "pg";
 import { RolModel } from "./RolModels";
 import pool from "../db/db";
+import { hashPassword } from "../utils/UtilsAuth";
 
 export class AuthModel {
   static async register(
@@ -18,7 +19,8 @@ export class AuthModel {
         VALUES ($1, $2, $3, $4)
         RETURNING *;
       `;
-      const values = [newUser.nombre, newUser.email, newUser.password, rolId];
+      const hashedPassword = await hashPassword(newUser.password);
+      const values = [newUser.nombre, newUser.email, hashedPassword, rolId];
 
       const result: QueryResult<UserTypes> = await pool.query(query, values);
       return result.rows[0];

@@ -16,6 +16,20 @@ export const MixedUserSchema = z.object({
   rol: z.enum(["usuario", "empleado", "admin"]).optional(),
 });
 
+
+const LoginSchema = z.object({
+  email: z.string().email("Email no válido"),
+  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+});
+
+export type LoginType = z.infer<typeof LoginSchema>;
+
+export const validateLogin = (input: unknown): LoginType => {
+  return LoginSchema.parse(input);
+};
+
+
+
 export type MixedUserType = z.infer<typeof MixedUserSchema>;
 
 export const validateRegister = (input: unknown): MixedUserType => {
