@@ -1,17 +1,12 @@
-import express, { Request, Response } from 'express';
+import express from "express";
+import { AuthRoutes } from "./routes/AuthRouter";
 
 const app = express();
 const PORT = 3000;
 
-// Middleware para parsear JSON
 app.use(express.json());
+app.use("/", AuthRoutes);
 
-// Ruta básica
-app.get('/', (_req: Request, res: Response) => {
-    res.send('¡Hola, mundo!');
-});
-
-// Iniciar el servidor
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

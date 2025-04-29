@@ -25,6 +25,7 @@ const createToken = (user: UserTypes): string => {
       {
         name: user.nombre,
         email: user.email,
+        rol: user.rol,
       },
       JWT_PASSWORD,
       {
