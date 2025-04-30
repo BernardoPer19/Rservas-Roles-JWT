@@ -10,8 +10,16 @@ export class AuthController {
     try {
       const validateData: MixedUserType = validateRegister(req.body);
       const isAdmin = !!validateData.rol;
+
+      const foudEmail = await AuthModel.getEmail(validateData.email);
+      if (foudEmail) {
+        res.status(404).json({ message: "El email YA está registrado" });
+        return;
+      }
+
       const newUser = await AuthModel.register(validateData, isAdmin);
 
+      // Enviar la respuesta solo una vez
       res.status(201).json({
         message: "Usuario registrado exitosamente",
         data: newUser,
@@ -19,23 +27,26 @@ export class AuthController {
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ error: error.message });
+        return;
       }
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
-  static async login(req: Request, res: Response) {
+  static async login(req: Request, res: Response): Promise<void> {
     try {
-      const { email, password } = validateLogin(req.body); // <-- esto reemplaza a req.body si ya tenés schema
+      const { email, password } = validateLogin(req.body);
 
       const user = await AuthModel.getEmail(email);
       if (!user) {
-        return res.status(404).json({ message: "El email no está registrado" });
+        res.status(404).json({ message: "El email no está registrado" });
+        return;
       }
 
       const isPasswordValid = await comparePasswords(password, user.password);
       if (!isPasswordValid) {
-        return res.status(401).json({ message: "La contraseña es incorrecta" });
+        res.status(401).json({ message: "La contraseña es incorrecta" });
+        return;
       }
 
       const token = createToken({
