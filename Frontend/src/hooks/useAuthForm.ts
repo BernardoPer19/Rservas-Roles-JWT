@@ -6,17 +6,17 @@ import { useAuth } from "../context/AuthContext";
 export const useAuthForm = () => {
   const { setUser } = useAuth();
 
-  // useAuthForm.ts
   const {
-    mutate: loginMutate,
     isPending: isLoginPending,
+    mutate: loginMutate,
     isError: isLoginError,
     error: loginError,
     reset: resetLoginMutation,
+    
   } = useMutation({
     mutationFn: (data: LoginType) => LoginRequest(data),
-    onSuccess: (user: UserTypes) => {
-      setUser(user); // esto debería guardar el usuario en AuthContext
+    onSuccess: (user) => {
+      setUser(user);
     },
     onError: (error) => {
       console.error("Error al iniciar sesión", error);

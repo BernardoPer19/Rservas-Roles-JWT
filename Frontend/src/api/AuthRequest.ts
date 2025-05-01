@@ -16,7 +16,7 @@ export const RegisterUserRequest = async (
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       const backendMessage =
-        error.response.data?.message || // 👈 prioriza message
+        error.response.data?.message ||
         error.response.data?.errors ||
         error.message;
       throw new Error(backendMessage);
@@ -46,7 +46,10 @@ export const LoginRequest = async (data: LoginType): Promise<UserTypes> => {
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
-      const backendMessage = error.response.data?.errors || error.message;
+      const backendMessage =
+        error.response.data?.message ||
+        error.response.data?.errors ||
+        error.message;
       throw new Error(backendMessage);
     }
     throw new Error("Error desconocido hacer login a el usuario.");
@@ -62,15 +65,14 @@ export const logoutRequest = async () => {
   }
 };
 
-// export const verifyUserRequest = async (): Promise<UserTypes> => {
-//   try {
-//     const response = await axios.get("/verify");
-//     return response.data.user;
-//   } catch (error) {
-//     if (error instanceof AxiosError && error.response) {
-//       const backendMessage = error.response.data?.errors || error.message;
-//       throw new Error(backendMessage);
-//     }
-//     throw new Error("Error desconocido hacer login a el usuario.");
-//   }
-// };
+export const getCurrentUserRequest = async () => {
+  try {
+    const response = await axios.get("/me");
+    console.log(response.data);
+    
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener el usuario:", error);
+    throw error;
+  }
+};

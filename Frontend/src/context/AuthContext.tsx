@@ -1,31 +1,50 @@
-import { createContext, useState, useContext, ReactNode } from "react";
+import { createContext, useContext, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { UserTypes } from "../types/AuthType";
+import { getCurrentUserRequest } from "../api/AuthRequest";
 
-interface AuthContextProps {
-  user: UserTypes | null;
-  setUser: (user: UserTypes | null) => void;
-}
+type AuthContextType = {
+  user: UserTypes | undefined;
+  isAuthLoading: boolean;
+  isAuthenticated: boolean;
+};
 
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const {
+    data: user,
+    isLoading: isAuthLoading,
+    error,
+  } = useQuery<UserTypes, AxiosError>({
+    queryKey: ["currentUser"],
+    queryFn: getCurrentUserRequest,
+    retry: false,
+  });
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<UserTypes | null>(null);
+  const isAuthenticated = useMemo(
+    () => !isAuthLoading && !!user,
+    [isAuthLoading, user]
+  );
+
+  if (error) {
+    console.error("Error al obtener el usuario:", error.message);
+  }
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, isAuthLoading, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextProps => {
+export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth debe usarse dentro de un AuthProvider");
+    throw new Error("useAuth debe usarse dentro de AuthProvider");
   }
   return context;
 };

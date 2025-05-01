@@ -4,7 +4,7 @@ import { LoginType } from "../types/AuthType";
 import { toast } from "sonner";
 
 const LoginForm: React.FC = () => {
-  const { loginMutate, isLoginPending, loginError, isLoginError } =
+  const { loginMutate, isLoginPending, loginError } =
     useAuthForm().login;
   const {
     register,
@@ -26,13 +26,18 @@ const LoginForm: React.FC = () => {
       },
     });
   };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="w-full max-w-md mx-auto p-6 space-y-6 bg-white rounded-2xl shadow-lg"
     >
       <h2 className="text-2xl font-semibold text-center">Iniciar sesión</h2>
-      {loginError instanceof Error && <p>{loginError.message}</p>}
+      {loginError instanceof Error && (
+        <p className="text-center text-red-600 font-bold">
+          {loginError.message}. Intenta nuevamente.
+        </p>
+      )}
       <div className="space-y-1">
         <input
           {...register("email")}
@@ -63,12 +68,6 @@ const LoginForm: React.FC = () => {
       >
         {isLoginPending ? "Cargando..." : "Iniciar sesión"}
       </button>
-
-      {isLoginError && (
-        <p className="text-center text-sm text-red-600">
-          Error al iniciar sesión. Intenta nuevamente.
-        </p>
-      )}
     </form>
   );
 };
