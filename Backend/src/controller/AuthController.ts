@@ -13,7 +13,7 @@ export class AuthController {
 
       const foudEmail = await AuthModel.getEmail(validateData.email);
       if (foudEmail) {
-        res.status(404).json({ message: "El email YA está registrado" });
+        res.status(400).json({ message: "El email YA está registrado" });
         return;
       }
 
@@ -25,10 +25,10 @@ export class AuthController {
       });
     } catch (error) {
       if (error instanceof Error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
         return;
       }
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
@@ -63,7 +63,6 @@ export class AuthController {
         maxAge: 24 * 60 * 60 * 1000,
       };
 
-    
       res
         .status(200)
         .cookie("access_token", token, options)
@@ -92,7 +91,7 @@ export class AuthController {
       sameSite: "strict",
     });
 
-    return res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({ message: "Logged out successfully" });
   }
 
   static protectedRoute(req: Request, res: Response) {
