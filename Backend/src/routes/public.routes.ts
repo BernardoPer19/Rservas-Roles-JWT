@@ -1,21 +1,29 @@
 import { Router } from "express";
-import { UserController } from "../controller/UserController";
-import { permitRoles } from "../middlewares/permisionRolesMiddleware";
 import { verify } from "../middlewares/verifyTokenMiddleware";
+import { permitRoles } from "../middlewares/permisionRolesMiddleware";
+import { UserController } from "../controller/UserController";
 
-export const publicRoutes = Router()
+const userRoutes = Router();
 
-publicRoutes.get(
-    "/profile",
-    verify,
-    permitRoles("usuario", "empleado", "admin"),
-    UserController.profile
-  );
-  
-  publicRoutes.get(
-    "/reservas-public",
-    verify,
-    permitRoles("usuario", "empleado", "admin"),
-    UserController.reservas
-  );
- 
+userRoutes.get(
+  "/reservas",
+  verify,
+  permitRoles("usuario"),
+  UserController.getReservations
+);
+
+userRoutes.post(
+  "/reservas",
+  verify,
+  permitRoles("usuario"),
+  UserController.createReservation
+);
+
+userRoutes.delete(
+  "/reservas/:id",
+  verify,
+  permitRoles("usuario"),
+  UserController.deleteReservation
+);
+
+export default userRoutes;

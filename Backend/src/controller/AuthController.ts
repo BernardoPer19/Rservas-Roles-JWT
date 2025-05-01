@@ -19,7 +19,6 @@ export class AuthController {
 
       const newUser = await AuthModel.register(validateData, isAdmin);
 
-      // Enviar la respuesta solo una vez
       res.status(201).json({
         message: "Usuario registrado exitosamente",
         data: newUser,

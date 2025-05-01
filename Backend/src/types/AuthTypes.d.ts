@@ -1,7 +1,7 @@
 export type rolesType = "usuario" | "empleado" | "admin";
 
 export interface UserTypes {
-  Usuario_id: string;
+  Usuario_id: number;
   nombre: string;
   email: string;
   password: string;

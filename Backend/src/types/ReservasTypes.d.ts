@@ -5,6 +5,15 @@ export interface ReservasDB {
   descripcion: string;
   encabezado: string;
 }
+export interface ReservaDBRJoin{
+  reserva_id: number;
+  problema_id: number;
+  Usuario_id: number; 
+  descripcion: string;
+  createAt: string;
+  encabezado: string;
+  estado_id: number;
+}
 
 export interface ReservasTypeFrontend {
   reserva_id?: number;
@@ -17,6 +26,6 @@ export interface ReservasTypeFrontend {
 
 export interface ProblemaInfo {
   id: number;
-  nombre: Problemas;    
+  nombre: Problemas;
 }
 export type EstadosTypes = "Pendiente" | "Aceptada" | "Rechazada";

@@ -2,29 +2,28 @@ import { Router } from "express";
 import { verify } from "../middlewares/verifyTokenMiddleware";
 import { permitRoles } from "../middlewares/permisionRolesMiddleware";
 import { AdminController } from "../controller/AdminController";
-import { UserController } from "../controller/UserController";
 
-const AdminRoute = Router();
+const adminRoutes = Router();
 
-AdminRoute.get(
-  "/dashboard",
+adminRoutes.get(
+  "/reservas",
+  verify,
+  permitRoles("admin", "empleado"),
+  AdminController.getAllReservations
+);
+
+adminRoutes.post(
+  "/reservas",
   verify,
   permitRoles("admin"),
-  AdminController.dashboard
+  AdminController.createReservation
 );
 
-AdminRoute.get(
-  "/register-admin",
+adminRoutes.delete(
+  "/reservas/:id",
   verify,
   permitRoles("admin"),
-  AdminController.dashboard
+  AdminController.deleteReservation
 );
 
-AdminRoute.get(
-  "/reservas-private",
-  verify,
-  permitRoles("empleado", "admin"),
-  UserController.reservas
-);
-
-export default AdminRoute;
+export default adminRoutes;
