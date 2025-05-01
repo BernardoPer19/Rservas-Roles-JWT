@@ -63,7 +63,7 @@ export class AuthController {
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
       };
-
+ 
       res
         .status(200)
         .cookie("access_token", token, options)
@@ -94,14 +94,17 @@ export class AuthController {
 
     return res.status(200).json({ message: "Logged out successfully" });
   }
-}
 
-export const protectedRoute = (req: Request, res: Response) => {
-  const user = req.user as UserTypes;
+  static protectedRoute(req: Request, res: Response) {
+    const user = req.user as UserTypes;
+    console.log(req.user?.rol);
 
-  if (!user) {
-    return res.status(401).json({ message: "Usuario no autorizado" });
+    if (!user) {
+      res.status(401).json({ message: "Usuario no autorizado" });
+      return;
+    }
+
+    res.status(200).json({ message: "Usuario autorizado", user });
+    return;
   }
-
-  return res.status(200).json({ message: "Usuario autorizado", user });
-};
+}

@@ -10,15 +10,13 @@ export const verify = (
 ) => {
   try {
     const token = req.cookies.access_token;
-    console.log(token)
-    console.log(req.cookies);
-    
     if (!token) {
       res.status(404).json("El token es invalido o fue expitado!");
       return;
     }
     const decoded = jwt.verify(token, JWT_PASSWORD) as UserTypes;
     req.user = decoded;
+    
     next();
   } catch (error) {
     if (error instanceof Error) {

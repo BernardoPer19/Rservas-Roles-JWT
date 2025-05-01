@@ -9,12 +9,12 @@ AuthRoutes.post("/register", AuthController.register);
 
 AuthRoutes.post("/login", AuthController.login);
 
-// AuthRoutes.get(
-//   "/dashboard",
-//   verify,
-//   permitRoles("admin"),
-//   DashboardController.adminOnly
-// );
+AuthRoutes.get(
+  "/dashboard",
+  verify,
+  permitRoles("admin"),
+  AuthController.protectedRoute
+);
 // AuthRoutes.get(
 //   "/empleado",
 //   verify,

@@ -34,13 +34,22 @@ export class AuthModel {
 
   static async getEmail(email: string): Promise<UserTypes | undefined> {
     try {
-      const query = `SELECT * FROM usuarios_tb WHERE email = $1`;
+      const query = `
+        SELECT 
+          u.nombre, 
+          u.email, 
+          u.password, 
+          r.nombre AS rol
+        FROM usuarios_tb u
+        JOIN roles_tb r ON u.rol_id = r.rol_id
+        WHERE u.email = $1
+      `;
       const values = [email];
       const result: QueryResult<UserTypes> = await pool.query(query, values);
       return result.rows[0];
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error("Error al buscar el email");
+        throw new Error(error.message);
       }
       throw new Error("Error en la DB");
     }

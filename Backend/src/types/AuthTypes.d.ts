@@ -1,4 +1,4 @@
-export type rolesType = "Usuario" | "Empleado" | "Admin";
+export type rolesType = "usuario" | "empleado" | "admin";
 
 export interface UserTypes {
   usuario_id?: string;
