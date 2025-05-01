@@ -75,6 +75,16 @@ export class AuthController {
             rol: user.rol,
           },
         });
+
+      console.log({
+        message: "Login exitoso",
+        user: {
+          id: user.Usuario_id,
+          email: user.email,
+          nombre: user.nombre,
+          rol: user.rol,
+        },
+      });
     } catch (error) {
       const err = error as Error;
       res.status(500).json({
@@ -104,5 +114,13 @@ export class AuthController {
 
     res.status(200).json({ message: "Usuario autorizado", user });
     return;
+  }
+  static async getCurrentUser(req: Request, res: Response) {
+    try {
+      const user = req.user;
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Error al obtener usuario actual" });
+    }
   }
 }
