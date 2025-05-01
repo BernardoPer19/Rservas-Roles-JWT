@@ -15,6 +15,7 @@ export const verify = (
       return;
     }
     const decoded = jwt.verify(token, JWT_PASSWORD) as UserTypes;
+    
     req.user = decoded;
     
     next();

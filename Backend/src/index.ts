@@ -1,13 +1,17 @@
 import express from "express";
-import { AuthRoutes } from "./routes/AuthRouter";
+import { AuthRoutes } from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
+import AdminRoute from "./routes/Admin.routes";
+import { publicRoutes } from "./routes/public.routes";
 
 const app = express();
 const PORT = 3000;
 
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(express.json());
 app.use("/", AuthRoutes);
+app.use("/", AdminRoute);
+app.use("/", publicRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

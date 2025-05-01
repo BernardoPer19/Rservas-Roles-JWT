@@ -50,7 +50,7 @@ export class AuthController {
       }
 
       const token = createToken({
-        usuario_id: user.usuario_id,
+        Usuario_id: user.Usuario_id,
         nombre: user.nombre,
         email: user.email,
         rol: user.rol,
@@ -63,14 +63,15 @@ export class AuthController {
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
       };
- 
+
+    
       res
         .status(200)
         .cookie("access_token", token, options)
         .json({
           message: "Login exitoso",
           user: {
-            id: user.usuario_id,
+            id: user.Usuario_id,
             email: user.email,
             nombre: user.nombre,
             rol: user.rol,
@@ -97,7 +98,6 @@ export class AuthController {
 
   static protectedRoute(req: Request, res: Response) {
     const user = req.user as UserTypes;
-    console.log(req.user?.rol);
 
     if (!user) {
       res.status(401).json({ message: "Usuario no autorizado" });
