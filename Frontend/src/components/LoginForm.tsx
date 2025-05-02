@@ -1,11 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAuthForm } from "../hooks/useAuthForm";
 import { LoginType } from "../types/AuthType";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 
 const LoginForm: React.FC = () => {
-  const { loginMutate, isLoginPending, loginError } =
-    useAuthForm().login;
+  const { loginMutate, isLoginPending, loginError } = useAuthForm().login;
   const {
     register,
     handleSubmit,
@@ -32,6 +31,7 @@ const LoginForm: React.FC = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="w-full max-w-md mx-auto p-6 space-y-6 bg-white rounded-2xl shadow-lg"
     >
+      <Toaster />
       <h2 className="text-2xl font-semibold text-center">Iniciar sesión</h2>
       {loginError instanceof Error && (
         <p className="text-center text-red-600 font-bold">

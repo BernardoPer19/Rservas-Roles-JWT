@@ -16,11 +16,11 @@ function App() {
           <Route
             path="/user"
             element={
-              <ProtectedRoute requiredRole="usuario">
+              <ProtectedRoute requiredRole="admin">
                 <UserProfile />
               </ProtectedRoute>
             }
-          >   </Route>
+          ></Route>
         </Routes>
       </BrowserRouter>
     </>

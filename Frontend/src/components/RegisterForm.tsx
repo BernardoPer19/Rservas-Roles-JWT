@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { UserTypes } from "../types/AuthType";
 import { useAuthForm } from "../hooks/useAuthForm";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 
 const RegisterForm: React.FC = () => {
   const { registerMutate, isRegisterPending, isRegisterError, registerError } =
@@ -31,6 +31,7 @@ const RegisterForm: React.FC = () => {
   };
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <Toaster />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"

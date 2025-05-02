@@ -68,8 +68,7 @@ export const logoutRequest = async () => {
 export const getCurrentUserRequest = async () => {
   try {
     const response = await axios.get("/me");
-    console.log(response.data);
-    
+
     return response.data;
   } catch (error) {
     console.error("Error al obtener el usuario:", error);
