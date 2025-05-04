@@ -94,16 +94,19 @@ export class AuthController {
     }
   }
 
-  static logout(_req: Request, res: Response) {
-    res.clearCookie("access_token", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-    });
-
-    res.status(200).json({ message: "Logged out successfully" });
+  static async logout(_req: Request, res: Response) {
+    try {
+      res.clearCookie("access_token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      });
+      res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+      console.error("Error en el logout:", error);
+      res.status(500).json({ message: "Error al cerrar sesión" });
+    }
   }
-
   static protectedRoute(req: Request, res: Response) {
     const user = req.user as UserTypes;
 

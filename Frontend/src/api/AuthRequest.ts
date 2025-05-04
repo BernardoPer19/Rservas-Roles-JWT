@@ -58,7 +58,7 @@ export const LoginRequest = async (data: LoginType): Promise<UserTypes> => {
 
 export const logoutRequest = async () => {
   try {
-    const response = await axios.get("/logout");
+    const response = await axios.post("/logout"); 
     return response.data;
   } catch (error) {
     console.log("Error en logout:", error);

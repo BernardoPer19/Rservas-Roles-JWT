@@ -1,10 +1,11 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { JSX } from "react";
+import { rolesType } from "../types/AuthType";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
-  requiredRole: string;
+  requiredRole: rolesType;
 }
 
 const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {

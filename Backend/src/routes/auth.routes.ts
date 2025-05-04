@@ -7,7 +7,7 @@ export const AuthRoutes = Router();
 
 AuthRoutes.post("/register", AuthController.register);
 AuthRoutes.post("/login", AuthController.login);
-AuthRoutes.post("/", AuthController.logout);
+AuthRoutes.post("/logout", AuthController.logout);
 AuthRoutes.get(
   "/me",
   verify,

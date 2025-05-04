@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { UserTypes } from "../types/AuthType";
@@ -8,6 +8,7 @@ type AuthContextType = {
   user: UserTypes | undefined;
   isAuthLoading: boolean;
   isAuthenticated: boolean;
+  setIsAuthenticated: (value: boolean) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,17 +26,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     retry: false,
   });
 
-  const isAuthenticated = useMemo(
-    () => !isAuthLoading && !!user,
-    [isAuthLoading, user]
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+    !isAuthLoading && !!user
   );
+
+  useEffect(() => {
+    setIsAuthenticated(!isAuthLoading && !!user);
+  }, [isAuthLoading, user]);
 
   if (error) {
     console.error("Error al obtener el usuario:", error.message);
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthLoading, isAuthenticated }}>
+    <AuthContext.Provider
+      value={{ user, isAuthLoading, isAuthenticated, setIsAuthenticated }}
+    >
       {children}
     </AuthContext.Provider>
   );
